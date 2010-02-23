@@ -15,6 +15,13 @@
 (def simple-snmp-get-next
   (partial simple-send snmp-get-next))
 
+(def simple-snmp-walk
+  (partial simple-send snmp-walk))
+
 (defn simple-test []
-  (.getResponse
-    (simple-snmp-get-next "public" "udp:localhost/161" "1.3.6")))
+  (println (simple-snmp-get-next
+             "public" "udp:localhost/161" "1.3.6.1.2.1.31.1.1.1"))
+  (println (apply + (map #(count (.getVariableBindings %))
+                         (simple-snmp-walk
+                           "public" "udp:localhost/161"
+                           "1.3.6.1.2.1.31.1.1.1")))))
