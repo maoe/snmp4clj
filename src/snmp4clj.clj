@@ -21,8 +21,7 @@
 (defmethod create-pdu :default [_ type oid]
   (doto (PDU.)
     (.setType type)
-    (.add (VariableBinding. (OID. oid)))
-    ))
+    (.add (VariableBinding. (OID. oid)))))
 
 (defmethod create-pdu :v3 [_ type oid]
   (doto (ScopedPDU.)
@@ -64,7 +63,7 @@
 (defn snmp-walk [indice oids target version])
 
 ;; Simple wrapper functions
-(defn simple-send [f community address oid]
+(defn- simple-send [f community address oid]
   (let [session (doto (Snmp. (DefaultUdpTransportMapping.))
                   (.listen))]
     (f session community address :v2c oid)))
