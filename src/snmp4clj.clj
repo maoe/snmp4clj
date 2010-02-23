@@ -20,8 +20,8 @@
 
 (defmethod create-pdu :default [_ type oid]
   (doto (PDU.)
-    (.add (VariableBinding. (OID. oid)))
     (.setType type)
+    (.add (VariableBinding. (OID. oid)))
     ))
 
 (defmethod create-pdu :v3 [_ type oid]
@@ -61,8 +61,7 @@
 (defn snmp-get-bulk [oid target version]
   (create-pdu version PDU/GETBULK (map oid oid)))
 
-(defn snmp-walk [indice oids target version]
-  )
+(defn snmp-walk [indice oids target version])
 
 ;; Simple wrapper functions
 (defn simple-send [f community address oid]
@@ -98,3 +97,4 @@
 (defn simple-test []
   (.getResponse
     (simple-snmp-get-next "public" "udp:localhost/161" "1.3.6")))
+
