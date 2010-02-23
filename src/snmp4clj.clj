@@ -15,25 +15,6 @@
 (def simple-snmp-get-next
   (partial simple-send snmp-get-next))
 
-;;
-;; (with-session [session & body])
-;;
-;; (with-session (create-session ...)
-;;   (get-next ...)
-;;   (walk ...))
-;;
-;; =>
-;;
-;; (let [s (create-session ...)]
-;;   (get-next ... s)
-;;   (walk ... s))
-;;
-
-(defmacro with-session [session & body]
-  (let [s (gensym "session-")]
-    `(let [~s session]
-     ~@(map #(list s %) body))))
-
 (defn simple-test []
   (.getResponse
     (simple-snmp-get-next "public" "udp:localhost/161" "1.3.6")))

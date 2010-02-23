@@ -22,3 +22,22 @@
 
 (defn snmp-walk [indice oids target version])
 
+;;
+;; (with-session [session & body])
+;;
+;; (with-session (create-session ...)
+;;   (get-next ...)
+;;   (walk ...))
+;;
+;; =>
+;;
+;; (let [s (create-session ...)]
+;;   (get-next ... s)
+;;   (walk ... s))
+;;
+
+(defmacro with-session [session & body]
+  (let [s (gensym "session-")]
+    `(let [~s session]
+     ~@(map #(list s %) body))))
+
