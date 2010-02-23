@@ -18,4 +18,6 @@
       (.setVersion SnmpConstants/version2c)
       (.setAddress (GenericAddress/parse address)))))
 
+(defmethod create-target :v3 [_ & opts]
+  (println "create-target: not implemented yet"))
 
