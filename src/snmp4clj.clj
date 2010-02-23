@@ -64,10 +64,17 @@
 (defn snmp-walk [indice oids target version]
   )
 
-(defn simple-snmp-get-next [community address oid]
+;; Simple wrapper functions
+(defn simple-send [f community address oid]
   (let [session (doto (Snmp. (DefaultUdpTransportMapping.))
                   (.listen))]
-    (snmp-get-next session community address :v2c oid)))
+    (f session community address :v2c oid)))
+
+(defn simple-snmp-get [community address oid]
+  (simple-send snmp-get community address oid))
+
+(defn simple-snmp-get-next [community address oid]
+  (simple-send snmp-get-next community address oid))
 
 ;;
 ;; (with-session [session & body])
