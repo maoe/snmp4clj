@@ -70,11 +70,11 @@
                   (.listen))]
     (f session community address :v2c oid)))
 
-(defn simple-snmp-get [community address oid]
-  (simple-send snmp-get community address oid))
+(def simple-snmp-get
+  (partial simple-send snmp-get))
 
-(defn simple-snmp-get-next [community address oid]
-  (simple-send snmp-get-next community address oid))
+(def simple-snmp-get-next
+  (partial simple-send snmp-get-next))
 
 ;;
 ;; (with-session [session & body])
