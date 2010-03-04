@@ -3,6 +3,6 @@
   :dependencies [[org.clojure/clojure "1.1.0-master-SNAPSHOT"]
                  [org.clojure/clojure-contrib "1.1.0-master-SNAPSHOT"]
                  [org.snmp4j/snmp4j "1.8.1"]
-                 [org.clojars.maoe/funky "0.0.4"]]
+                 [org.clojars.maoe/funky "0.0.5"]]
   :dev-dependencies [[leiningen/lein-swank "1.1.0"]]
   :main snmp4clj)

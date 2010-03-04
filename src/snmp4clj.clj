@@ -1,11 +1,12 @@
 (ns snmp4clj
-  (:use snmp4clj.core
-        snmp4clj.pdu
+  (:use snmp4clj.pdu
         snmp4clj.target
+        snmp4clj.session
         org.clojars.maoe.funky)
+  (:use clojure.contrib.pprint)
   (:import [org.snmp4j Snmp PDU]
            [org.snmp4j.smi OID]
-           [org.snmp4j.util TreeUtils DefaultPDUFactory])
+           [org.snmp4j.util TableUtils TreeUtils DefaultPDUFactory])
   (:gen-class))
 
 (defnk snmp-get
@@ -38,20 +39,32 @@
         tgt (create-target version community address)]
     (.send session pdu tgt)))
 
-(defnk snmp-walk
+(defnk snmp-table-walk
   [session
    :community "public"
    :address "udp:localhost/161"
    :version :v2c
+   :max-rows-per-pdu 10
+   :max-cols-per-pdu 10
+   :lower-bound nil
+   :upper-bound nil
+   :async nil
    & oid]
-  (let [tgt (create-target version community address)
-        util (doto (TreeUtils. session (DefaultPDUFactory.))
-               (.setMaxRepetitions 10))]
-    (.getSubtree util tgt (OID. oid))))
+  (let [target (create-target version community address)
+        tree (doto (TableUtils. session (DefaultPDUFactory.))
+               (.setMaxNumRowsPerPDU max-rows-per-pdu)
+               (.setMaxNumColumnsPerPDU max-cols-per-pdu))]
+    (seq
+     (.getTable tree target
+       (into-array OID (map #(OID. %) oid))
+       lower-bound
+       upper-bound))))
 
 ;; debug
 (defn -main []
   (with-session session
     (->> (snmp-get-next session "1.3.6.1.2.1.31.1.1.1")
          (.getResponse)
-         (println))))
+         (pprint))
+    (->> (snmp-table-walk session "1.3.6.1.2.1.31")
+         (pprint))))
