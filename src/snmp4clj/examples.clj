@@ -8,7 +8,7 @@
   (with-snmp-session session
     ;; retrieve a name of the first network interface
     (->> (snmp-get-next session
-           :address "udp:distrib07.host.h/161"
+           :address "udp:localhost/161"
            "1.3.6.1.2.1.31.1.1.1")
          (.getResponse)
          (pprint)
@@ -16,7 +16,7 @@
 
     ;; retrieve a status map of all network interfaces
     (->> (snmp-table-walk session
-           :address "udp:distrib07.host.h/161" 
+           :address "udp:localhost/161" 
            "1.3.6.1.2.1.31.1.1.1.1"
            "1.3.6.1.2.1.31.1.1.1.2"
            "1.3.6.1.2.1.31.1.1.1.3")
