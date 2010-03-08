@@ -12,24 +12,25 @@
            :address "udp:localhost/161"
            "1.3.6.1.2.1.31.1.1.1")
          (.getResponse)
-         (pprint)
-         (println))
+         (pprint))
 
     ;; retrieve a status map of all network interfaces
     (->> (snmp-table-walk session
            "1.3.6.1.2.1.31.1.1.1.1"
            "1.3.6.1.2.1.31.1.1.1.2"
            "1.3.6.1.2.1.31.1.1.1.3")
-         (pprint)
-         (println))
+         (pprint))
 
     ;; table-walk with for-table-* utilities
     (let [table (snmp-table-walk session
                   "1.3.6.1.2.1.31.1.1.1.1"
                   "1.3.6.1.2.1.31.1.1.1.2"
                   "1.3.6.1.2.1.31.1.1.1.3")]
-      ;; (dorun
-      ;;   (for-table-with-row r table (println (type r))))
-      (dorun
-        (for-table-with-column c table (println (.getVariable c))))
+      (println
+       (apply +
+              (for-table-with-row r table
+                (count r))))
+      (pprint
+       (for-table-with-column c table
+         (.getVariable c)))
     )))
