@@ -4,7 +4,9 @@
                  [org.clojure/clojure-contrib "1.1.0-master-SNAPSHOT"]
                  [org.snmp4j/snmp4j "1.11"]
                  [org.clojars.maoe/funky "0.0.6"]]
-  :dev-dependencies [[leiningen/lein-swank "1.1.0"]]
+  :dev-dependencies [[leiningen/lein-swank "1.1.0"]
+                     [lein-clojars "0.5.0-SNAPSHOT"]
+                     [autodoc "0.7.0"]]
   :namespaces [snmp4j]
   :repositories {"oosnmp" "https://server.oosnmp.net/dist/release"}
   :main snmp4clj.examples)
