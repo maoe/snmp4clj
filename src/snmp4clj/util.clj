@@ -8,5 +8,5 @@
 
 (defmacro for-table-with-column [column-name table & body]
   `(for-table-with-row row# ~table
-     (for [~column-name row#]
-       ~@body)))
+     (for [~column-name row#] ~@body)))
+
