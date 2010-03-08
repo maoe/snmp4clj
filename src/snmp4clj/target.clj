@@ -2,7 +2,7 @@
   (:import (org.snmp4j CommunityTarget)
            (org.snmp4j.mp SnmpConstants)
            (org.snmp4j.smi GenericAddress OctetString))
-  (:use org.clojars.maoe.funky))
+  (:use funky))
 
 (defmulti create-target
   (fn [v & _]

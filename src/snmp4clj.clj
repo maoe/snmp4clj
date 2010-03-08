@@ -1,7 +1,7 @@
 (ns snmp4clj
   (:use snmp4clj.pdu
         snmp4clj.target
-        org.clojars.maoe.funky)
+        funky)
   (:import [org.snmp4j Snmp PDU]
            [org.snmp4j.smi OID]
            [org.snmp4j.util TableUtils TreeUtils DefaultPDUFactory])
