@@ -30,7 +30,7 @@
        (apply +
               (for-table-with-row r table
                 (count r))))
-      (pprint
+      (println
        (for-table-with-column c table
          (.getVariable c)))
     )))
