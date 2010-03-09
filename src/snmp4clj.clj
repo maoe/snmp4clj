@@ -16,12 +16,12 @@
    :async nil
    & oid]
   (let [pdu (create-pdu version PDU/GET oid)
-        tgt (create-target version
+        target (create-target version
               :community community
               :address address)]
     (if async
-      (.send session pdu tgt nil async)
-      (.send session pdu tgt))))
+      (.send session pdu target nil async)
+      (.send session pdu target))))
 
 (defnk snmp-get-next
   [session
@@ -31,12 +31,12 @@
    :async nil
    & oid]
   (let [pdu (apply create-pdu version PDU/GETNEXT oid)
-        tgt (create-target version
+        target (create-target version
               :community community
               :address address)]
     (if async
-      (.send session pdu tgt nil async)
-      (.send session pdu tgt))))
+      (.send session pdu target nil async)
+      (.send session pdu target))))
 
 (defnk snmp-get-bulk
   [session
@@ -46,12 +46,12 @@
    :async nil
    & oid]
   (let [pdu (create-pdu version PDU/GETBULK oid)
-        tgt (create-target version
+        target (create-target version
               :community community
               :address address)]
     (if async
-      (.send session pdu tgt nil async)
-      (.send session pdu tgt))))
+      (.send session pdu target nil async)
+      (.send session pdu target))))
 
 (defnk snmp-table-walk
   [session
