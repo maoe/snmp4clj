@@ -4,6 +4,7 @@
         funky)
   (:import [org.snmp4j Snmp PDU]
            [org.snmp4j.smi OID]
+           [org.snmp4j.event ResponseListener]
            [org.snmp4j.util TableUtils TreeUtils DefaultPDUFactory])
   (:gen-class))
 
@@ -12,36 +13,45 @@
    :community "public"
    :address "udp:localhost/161"
    :version :v2c
+   :async nil
    & oid]
   (let [pdu (create-pdu version PDU/GET oid)
         tgt (create-target version
               :community community
               :address address)]
-    (.send session pdu tgt)))
+    (if async
+      (.send session pdu tgt nil async)
+      (.send session pdu tgt))))
 
 (defnk snmp-get-next
   [session
    :community "public"
    :address "udp:localhost/161"
    :version :v2c
+   :async nil
    & oid]
   (let [pdu (apply create-pdu version PDU/GETNEXT oid)
         tgt (create-target version
               :community community
               :address address)]
-    (.send session pdu tgt)))
+    (if async
+      (.send session pdu tgt nil async)
+      (.send session pdu tgt))))
 
 (defnk snmp-get-bulk
   [session
    :community "public"
    :address "udp:localhost/161"
    :version :v2c
+   :async nil
    & oid]
   (let [pdu (create-pdu version PDU/GETBULK oid)
         tgt (create-target version
               :community community
               :address address)]
-    (.send session pdu tgt)))
+    (if async
+      (.send session pdu tgt nil async)
+      (.send session pdu tgt))))
 
 (defnk snmp-table-walk
   [session
