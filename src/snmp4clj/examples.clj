@@ -2,7 +2,7 @@
   (:use snmp4clj
         snmp4clj.session
         snmp4clj.util)
-  (:use clojure.contrib.pprint)
+  (:use [clojure.contrib core pprint])
   (:import [org.snmp4j.event ResponseListener])
   (:gen-class))
 
@@ -24,7 +24,7 @@
                        "1.3.6.1.2.1.31.1.1.1.1")))
 
     (println "retrieve a status map of all network interfaces")
-    (->> (snmp-table-walk session
+    (-?> (snmp-table-walk session
            "1.3.6.1.2.1.31.1.1.1.1"
            "1.3.6.1.2.1.31.1.1.1.2"
            "1.3.6.1.2.1.31.1.1.1.3")
