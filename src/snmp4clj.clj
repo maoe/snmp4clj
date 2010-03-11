@@ -70,8 +70,10 @@
         tree (doto (TableUtils. session (DefaultPDUFactory.))
                (.setMaxNumRowsPerPDU max-rows-per-pdu)
                (.setMaxNumColumnsPerPDU max-cols-per-pdu))]
-    (seq
-     (.getTable tree target
-       (into-array OID (map #(OID. %) oid))
-       lower-bound
-       upper-bound))))
+    (if async
+      (.getTable tree target async nil lower-bound upper-bound)
+      (seq
+       (.getTable tree target
+                  (into-array OID (map #(OID. %) oid))
+                  lower-bound
+                  upper-bound)))))
