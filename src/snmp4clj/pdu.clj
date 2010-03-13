@@ -1,6 +1,6 @@
 (ns snmp4clj.pdu
-  (:import (org.snmp4j Snmp PDUv1 PDU ScopedPDU)
-           (org.snmp4j.smi OID VariableBinding)))
+  (:import [org.snmp4j Snmp PDUv1 PDU ScopedPDU]
+           [org.snmp4j.smi OID VariableBinding]))
 
 (defn init-pdu [pdu type & oid]
   (doto pdu

@@ -1,6 +1,6 @@
-(ns snmp4clj
-  (:use snmp4clj.pdu
-        snmp4clj.target
+(ns snmp4clj.core
+  (:use [snmp4clj pdu target])
+  (:use clojure.contrib.core
         funky)
   (:import [org.snmp4j Snmp PDU]
            [org.snmp4j.smi OID]
@@ -21,7 +21,10 @@
               :address address)]
     (if async
       (.send session pdu target nil async)
-      (.send session pdu target))))
+      (-?> (.send session pdu target)
+           (.getResponse)
+           (.getVariableBindings)
+           (seq)))))
 
 (defnk snmp-get-next
   [session
@@ -36,7 +39,10 @@
               :address address)]
     (if async
       (.send session pdu target nil async)
-      (.send session pdu target))))
+      (-?> (.send session pdu target)
+           (.getResponse)
+           (.getVariableBindings)
+           (seq)))))
 
 (defnk snmp-get-bulk
   [session
@@ -51,7 +57,10 @@
               :address address)]
     (if async
       (.send session pdu target nil async)
-      (.send session pdu target))))
+      (-?> (.send session pdu target)
+           (.getResponse)
+           (.getVariableBindings)
+           (seq)))))
 
 (defnk snmp-table-walk
   [session
@@ -67,13 +76,14 @@
   (let [target (create-target version
                  :community community
                  :address address)
-        tree (doto (TableUtils. session (DefaultPDUFactory.))
+        table (doto (TableUtils. session (DefaultPDUFactory.))
                (.setMaxNumRowsPerPDU max-rows-per-pdu)
                (.setMaxNumColumnsPerPDU max-cols-per-pdu))]
     (if async
-      (.getTable tree target async nil lower-bound upper-bound)
-      (seq
-       (.getTable tree target
-                  (into-array OID (map #(OID. %) oid))
-                  lower-bound
-                  upper-bound)))))
+      (.getTable table target async nil lower-bound upper-bound)
+      (let [tbl (.getTable table target
+                           (into-array OID (map #(OID. %) oid))
+                           lower-bound upper-bound)]
+        (if (.isError (.getFirst tbl))
+          '()
+          (map (comp seq (memfn getColumns)) tbl))))))
