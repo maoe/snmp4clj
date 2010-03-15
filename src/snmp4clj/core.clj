@@ -81,9 +81,11 @@
                (.setMaxNumColumnsPerPDU max-cols-per-pdu))]
     (if async
       (.getTable table target async nil lower-bound upper-bound)
+      ;; FIXME: ugly
       (let [tbl (.getTable table target
                            (into-array OID (map #(OID. %) oid))
                            lower-bound upper-bound)]
-        (if (.isError (.getFirst tbl))
-          '()
-          (map (comp seq (memfn getColumns)) tbl))))))
+        (let [ret (map (comp seq (memfn getColumns)) tbl)]
+          (if (first ret)
+            ret
+            '()))))))
